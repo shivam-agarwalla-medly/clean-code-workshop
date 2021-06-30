@@ -19,46 +19,53 @@ public class Customer {
     return name;
   }
 
-  public String statement() {
-    double totalAmount = 0;
-    int frequentRenterPoints = 0;
+  public String statement()
+  {
     String result = "Rental Record for " + getName() + "\n";
-    for (Rental each : rentals) {
-      double thisAmount = 0;
-      //determine amounts for each line
-      switch (each.getMovie().getPriceCode()) {
-        case Movie.REGULAR:
-          thisAmount += 2;
-          if (each.getDaysRented() > 2)
-            thisAmount += (each.getDaysRented() - 2) * 1.5;
-          break;
-        case Movie.NEW_RELEASE:
-          thisAmount += each.getDaysRented() * 3;
-          break;
-        case Movie.CHILDRENS:
-          thisAmount += 1.5;
-          if (each.getDaysRented() > 3)
-            thisAmount += (each.getDaysRented() - 3) * 1.5;
-          break;
-      }
-      // add frequent renter points
-      frequentRenterPoints++;
-      // add bonus for a two day new release rental
-      if ((each.getMovie().getPriceCode() == Movie.NEW_RELEASE)
-          &&
-          each.getDaysRented() > 1) frequentRenterPoints++;
 
+    for (Rental each : rentals) {
       //show figures for this rental
       result += "\t" + each.getMovie().getTitle() + "\t" +
-          String.valueOf(thisAmount) + "\n";
-      totalAmount += thisAmount;
+          String.valueOf(each.amount()) + "\n";
     }
-
     //add footer lines result
-    result += "Amount owed is " + String.valueOf(totalAmount) + "\n";
-    result += "You earned " + String.valueOf(frequentRenterPoints)
+    result += "Amount owed is " + String.valueOf(TotalAmount()) + "\n";
+    result += "You earned " + String.valueOf(TotalFrequentRenterPoints())
         + " frequent renter points";
     return result;
   }
+  public String htmlStatement()
+  {
+    String result="<h1>Rental Record for <b>" + getName() + "</b></h1><br>";
+
+    for(Rental each : rentals)
+    {
+      result+=each.getMovie().getTitle()+" "+String.valueOf(each.amount())+"<br>";
+    }
+    result+="Amount owed is <b>"+String.valueOf(TotalAmount())+"</b><br>";
+    result+="You earned <b>"+String.valueOf(TotalFrequentRenterPoints())+"</b> frequent renter points";
+
+    System.out.println(result);
+    return result;
+  }
+
+  private int TotalFrequentRenterPoints() {
+    int frequentRenterPoints=0;
+    for (Rental each : rentals) {
+      frequentRenterPoints += each.frequenterPoints();
+    }
+    return frequentRenterPoints;
+  }
+
+  private double TotalAmount()
+  {
+    double totalAmount = 0;
+    for (Rental each : rentals) {
+      totalAmount += each.amount();
+    }
+    return totalAmount;
+  }
+
+
 }
 
