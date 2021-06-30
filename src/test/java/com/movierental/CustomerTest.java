@@ -38,6 +38,7 @@ public class CustomerTest {
 
         assertEquals(expectedStatement,resultStatement);
     }
+
     @Test
     public void baseHTMLTest()
     {
@@ -69,5 +70,4 @@ public class CustomerTest {
 
         assertEquals(expectedStatement,resultStatement);
     }
-
 }

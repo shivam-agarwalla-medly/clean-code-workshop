@@ -24,6 +24,7 @@ public class Rental {
     if(isBonusApplicable())points++;
     return  points;
   }
+
   private boolean isBonusApplicable()
   {
     if((movie.getPriceCode()==Movie.NEW_RELEASE) && getDaysRented()>1)
@@ -31,6 +32,7 @@ public class Rental {
 
     return false;
   }
+
   public double amount()
   {
     double thisAmount=0;
